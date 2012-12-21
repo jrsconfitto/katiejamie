@@ -5,17 +5,19 @@ $(function(){
 var katieAndJamieSpreadsheet = 'https://docs.google.com/spreadsheet/pub?key=0AmhWglGO45rldGNoYy12ZDk2bU1EWTRZTWFtVEpJd2c&output=html';
 var happenings;
 
+// Read the spreadsheet first, then execute the callback
 function init() {
   Tabletop.init( { key: katieAndJamieSpreadsheet,
                    callback: showInfo,
                    simpleSheet: true } )
 }
 
+// Spreadsheet callback
 function showInfo(data, tabletop) {
   console.log('Successfully processed!')
   console.log(data);
 
-  // Create a map
+  // Create a map... with yet another callback
   mapbox.auto('map', 'jugglingnutcase.map-rxoo73qt', function(map) {
     // Create an empty markers layer
     var markerLayer = mapbox.markers.layer();
@@ -31,20 +33,19 @@ function showInfo(data, tabletop) {
       var lat = parseFloat(happyHappening.latitude);
       var lng = parseFloat(happyHappening.longitude);
 
-      if ( !isNaN(lat) && !isNaN(lng) ) {
-        return { 'geometry' : {"coordinates": [lng, lat]},
-                 'properties' : {
-                   'marker-color': '#000',
-                   'marker-symbol': 'star-stroked',
-                   title: 'Yay!',
-                   description: happyHappening.Description
-                 }
-               }
+      // Set defaults if i can't parse it
+      if ( isNaN(lat) || isNaN(lng) ) {
+        lat = 43.14
+        lng = -77.58
       }
-      else {
-        // All the ones that don't have good locations i just locate at our home :)
-        return { 'geometry' : {"type": "Point", "coordinates": [43.14, -77.58]},
-                 'properties' : 'i  love you Katie!'}
+
+      return { 'geometry' : {"coordinates": [lng, lat]},
+               'properties' : {
+                 'marker-color': '#000',
+                 'marker-symbol': 'star-stroked',
+                 title: happyHappening.title,
+                 description: happyHappening.description
+               }
       }
     })
     console.log('Happenings!');

@@ -1,0 +1,16 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Jamie -- Husband/developer -- @jugglingnutcase
+    Katie -- Wife/Cutie -- @CameronCM42
+
+# THANKS
+
+    Everyone that helped us get married!
+
+# TECHNOLOGY COLOPHON
+
+    HTML5, CSS3
+    jQuery, Modernizr

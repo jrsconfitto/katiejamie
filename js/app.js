@@ -32,6 +32,11 @@ function showInfo(data, tabletop) {
     mapbox.markers.interaction(theMarkerLayer);
     theMap.addLayer(theMarkerLayer);
 
+    // Convert the times to moment
+    data.forEach(function(datum) {
+      datum.date = moment(datum.date);
+    })
+
     // Convert the data from the spreadsheet into features for insertion as markers
     happenings = data.map(function(happyHappening) {
       var lat = parseFloat(happyHappening.latitude);
@@ -48,7 +53,8 @@ function showInfo(data, tabletop) {
                  'marker-color': '#000',
                  'marker-symbol': 'star-stroked',
                  title: happyHappening.title,
-                 description: happyHappening.description
+                 description: happyHappening.description,
+                 time: happyHappening.date
                }
       }
     })
@@ -62,15 +68,22 @@ function showInfo(data, tabletop) {
     var currentMarkerIndex = 0;
     var totalMarkers = happenings.length;
 
-    var markers = theMarkerLayer.markers()
+    var markers = theMarkerLayer.markers().sort(function(a, b) {
+      return a.data.properties.time.unix() - b.data.properties.time.unix()
+    })
+
     setInterval(function() {
+      // Find the current marker
+      var currentMarker = markers[currentMarkerIndex]
+
       // Ease to the marker
-      console.log('Take it easey bro');
-      var location = markers[currentMarkerIndex].location;
-      theMap.ease.location(location).zoom(15).optimal();
+      theMap.ease.location(currentMarker.location).zoom(15).optimal();
+
+      // Show the marker's popup
+      //currentMarker.showTooltip();
 
       // Increment the marker or start over again
-      if  (currentMarkerIndex >= totalMarkers) {
+      if  (currentMarkerIndex = totalMarkers - 1) {
         currentMarkerIndex = 0; 
       }
       else {

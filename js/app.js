@@ -29,8 +29,30 @@ function showInfo(data, tabletop) {
     // Add interaction to this marker layer. This
     // binds tooltips to each marker that has title
     // and description defined.
-    mapbox.markers.interaction(theMarkerLayer);
+    mapbox.markers.interaction(theMarkerLayer).hideOnMove(true);
+    var interaction = mapbox.markers.interaction(theMarkerLayer);
+
     theMap.addLayer(theMarkerLayer);
+
+    // Set a custom formatter for tooltips
+    // Provide a function that returns html to be used in tooltip
+    interaction.formatter(function(feature) {
+      var o;
+
+      o = '<h2>' + feature.properties.title + '</h2>';
+
+      if (feature.properties.description != '') {
+        o = o + '<p>' + feature.properties.description + '</p>';
+      }
+
+      if (feature.properties.image != undefined) {
+        o = o + '<img src="' + feature.properties.image + '">';
+      }
+
+      o = o + '<p align=right><i>' + feature.properties.date.format('MMM Do YY') + '</i></p>';
+
+      return o;
+    });
 
     // Convert the times to moment
     data.forEach(function(datum) {
@@ -51,12 +73,13 @@ function showInfo(data, tabletop) {
       return { 'geometry' : {"coordinates": [lng, lat]},
                'properties' : {
                  'marker-color': '#000',
-                 'marker-symbol': 'star-stroked',
+                 'marker-symbol': happyHappening.marker,
                  title: happyHappening.title,
                  description: happyHappening.description,
-                 time: happyHappening.date
+                 date: happyHappening.date,
+                 image: happyHappening.image
                }
-      }
+             };
     })
     console.log('Happenings!');
     console.log(happenings);
@@ -69,7 +92,7 @@ function showInfo(data, tabletop) {
     var totalMarkers = happenings.length;
 
     var markers = theMarkerLayer.markers().sort(function(a, b) {
-      return a.data.properties.time.unix() - b.data.properties.time.unix()
+      return a.data.properties.date.unix() - b.data.properties.date.unix()
     })
 
     setInterval(function() {
@@ -80,16 +103,16 @@ function showInfo(data, tabletop) {
       theMap.ease.location(currentMarker.location).zoom(15).optimal();
 
       // Show the marker's popup
-      //currentMarker.showTooltip();
+      currentMarker.showTooltip();
 
       // Increment the marker or start over again
-      if  (currentMarkerIndex = totalMarkers - 1) {
+      if  (currentMarkerIndex == totalMarkers - 1) {
         currentMarkerIndex = 0; 
       }
       else {
         currentMarkerIndex++;
       }
-    }, 10000);
+    }, 12000);
   });
 }
 

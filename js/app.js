@@ -86,15 +86,17 @@ function showInfo(data, tabletop) {
 
     // Add the markers into the map!
     theMarkerLayer.features(happenings);
-
-    // Set an interval to ease between markers
-    var currentMarkerIndex = 0;
-    var totalMarkers = happenings.length;
-
     var markers = theMarkerLayer.markers().sort(function(a, b) {
       return a.data.properties.date.unix() - b.data.properties.date.unix()
     })
 
+    // Ease to and show the initial marker
+    theMap.ease.location(markers[0].location).zoom(15).optimal();
+    markers[0].showTooltip();
+
+    // Set an interval to ease between markers
+    var currentMarkerIndex = 1; // we'll start looping on the second marker and display the first
+    var totalMarkers = happenings.length;
     setInterval(function() {
       // Find the current marker
       var currentMarker = markers[currentMarkerIndex]

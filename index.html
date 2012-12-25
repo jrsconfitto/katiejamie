@@ -14,9 +14,31 @@
           body { margin:0; padding:0; }
           #map { position:absolute; top:0; bottom:0; width:100%; }
         </style>
+        <style>
+          #map-ui a {
+            position:absolute;
+            z-index:1000;
+            bottom:10px;right:10px;
+            font:13px/18px;
+            background:#FFF;
+            color:#3C4E5A;
+            display:block;
+            margin:0;padding:0;
+            border:1px solid #BBB;
+            min-width:138px;
+            padding:10px;
+            text-decoration:none;
+            -webkit-border-radius:3px;
+                    border-radius:3px;
+          }
+          #map-ui a:hover { background:#ECF5FA; }
+        </style>
     </head>
     <body>
         <div id="map"></div>
+        <div id='map-ui'>
+          <a id='play' href='#'>Stop</a>
+        </div>
 
         <!-- Lots of scripts! -->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>

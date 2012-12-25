@@ -6,6 +6,7 @@ var katieAndJamieSpreadsheet = 'https://docs.google.com/spreadsheet/pub?key=0Amh
 var happenings;
 var theMap;
 var theMarkerLayer;
+var playIt;
 
 // Read the spreadsheet first, then execute the callback
 function init() {
@@ -97,24 +98,47 @@ function showInfo(data, tabletop) {
     // Set an interval to ease between markers
     var currentMarkerIndex = 1; // we'll start looping on the second marker and display the first
     var totalMarkers = happenings.length;
-    setInterval(function() {
-      // Find the current marker
-      var currentMarker = markers[currentMarkerIndex]
+    var playIt = function() { 
+      var timerId = setInterval(function() {
+        // Find the current marker
+        var currentMarker = markers[currentMarkerIndex]
 
-      // Ease to the marker
-      theMap.ease.location(currentMarker.location).zoom(15).optimal();
+        // Ease to the marker
+        theMap.ease.location(currentMarker.location).zoom(15).optimal();
 
-      // Show the marker's popup
-      currentMarker.showTooltip();
+        // Show the marker's popup
+        currentMarker.showTooltip();
 
-      // Increment the marker or start over again
-      if  (currentMarkerIndex == totalMarkers - 1) {
-        currentMarkerIndex = 0; 
+        // Increment the marker or start over again
+        if  (currentMarkerIndex == totalMarkers - 1) {
+          currentMarkerIndex = 0; 
+        }
+        else {
+          currentMarkerIndex++;
+        }
+      }, 12000);
+
+      return timerId;
+    };
+
+    // Start it off
+    var id = playIt();
+    var playing = true
+
+    // Set the start and stop handler
+    $('#play').click(function() {
+      if (playing) {
+        // Then stop it
+        clearInterval(id);
+        playing = false;
+        $(this).text('Play!');
       }
       else {
-        currentMarkerIndex++;
+        id = playIt();
+        playing = true;
+        $(this).text('Stop!');
       }
-    }, 12000);
+    });
   });
 }
 

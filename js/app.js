@@ -50,7 +50,7 @@ function showInfo(data, tabletop) {
         o = o + '<img src="' + feature.properties.image + '">';
       }
 
-      o = o + '<p align=right><i>' + feature.properties.date.format('MMM Do YY') + '</i></p>';
+      o = o + '<p align=right><i>' + feature.properties.date.format('MMM Do YYYY') + '</i></p>';
 
       return o;
     });

@@ -50,7 +50,7 @@ function showInfo(data, tabletop) {
         o = o + '<img src="' + feature.properties.image + '">';
       }
 
-      o = o + '<p align=right><i>' + feature.properties.date.format('MMM Do YYYY') + '</i></p>';
+      o = o + '<p align=right><i>' + feature.properties.date.format('MMMM Do YYYY') + '</i></p>';
 
       return o;
     });
@@ -92,7 +92,7 @@ function showInfo(data, tabletop) {
     })
 
     // Ease to and show the initial marker
-    theMap.ease.location(markers[0].location).zoom(15).optimal();
+    theMap.ease.location(markers[0].location).zoom(13).optimal();
     markers[0].showTooltip();
 
     // Set an interval to ease between markers

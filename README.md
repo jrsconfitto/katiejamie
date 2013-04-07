@@ -8,7 +8,6 @@ A short documentation of things we've done together! fun!
 * [mapbox.js](http://mapbox.com/mapbox.js/api/v0.6.7/) for javascript
 * [maki](http://mapbox.com/maki/) for marker styling
 * [tabletop.js]() for reading my data from a google docs spreadsheet
-* [tabletop.js]() for reading my data from a google docs spreadsheet
 
 ## Thanks
 

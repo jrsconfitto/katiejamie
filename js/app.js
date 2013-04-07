@@ -40,17 +40,19 @@ function showInfo(data, tabletop) {
     interaction.formatter(function(feature) {
       var o;
 
-      o = '<h2>' + feature.properties.title + '</h2>';
+      o = '<h3>' + feature.properties.title + '</h3>';
+      o = o + '<p>';
 
       if (feature.properties.description != '') {
-        o = o + '<p>' + feature.properties.description + '</p>';
+        o = o + feature.properties.description + '<br>';
       }
 
       if (feature.properties.image != undefined) {
         o = o + '<img src="' + feature.properties.image + '">';
       }
 
-      o = o + '<p align=right><i>' + feature.properties.date.format('MMMM Do YYYY') + '</i></p>';
+      o = o + '<i>' + feature.properties.date.format('MMMM Do YYYY') + '</i>';
+      o = o + '</p>';
 
       return o;
     });
@@ -141,4 +143,5 @@ function showInfo(data, tabletop) {
     });
   });
 }
+
 

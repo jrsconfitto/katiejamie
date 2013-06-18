@@ -10,14 +10,15 @@ var playIt;
 
 // Read the spreadsheet first, then execute the callback
 function init() {
-  Tabletop.init( { key: katieAndJamieSpreadsheet,
-                   callback: showInfo,
-                   simpleSheet: true } )
+  Tabletop.init({
+   key: katieAndJamieSpreadsheet,
+   callback: showInfo,
+   simpleSheet: true });
 }
 
 // Spreadsheet callback
 function showInfo(data, tabletop) {
-  console.log('Successfully processed!')
+  console.log('Successfully processed!');
   console.log(data);
 
   // Create a map... with yet another callback
@@ -43,11 +44,11 @@ function showInfo(data, tabletop) {
       o = '<h3>' + feature.properties.title + '</h3>';
       o = o + '<p>';
 
-      if (feature.properties.description != '') {
+      if (feature.properties.description !== '') {
         o = o + feature.properties.description + '<br>';
       }
 
-      if (feature.properties.image != undefined) {
+      if (feature.properties.image !== undefined) {
         o = o + '<img src="' + feature.properties.image + '">';
       }
 
@@ -60,7 +61,7 @@ function showInfo(data, tabletop) {
     // Convert the times to moment
     data.forEach(function(datum) {
       datum.date = moment(datum.date);
-    })
+    });
 
     // Convert the data from the spreadsheet into features for insertion as markers
     happenings = data.map(function(happyHappening) {
@@ -69,29 +70,31 @@ function showInfo(data, tabletop) {
 
       // Set defaults if i can't parse it
       if ( isNaN(lat) || isNaN(lng) ) {
-        lat = 43.14
-        lng = -77.58
+        lat = 43.14;
+        lng = -77.58;
       }
 
-      return { 'geometry' : {"coordinates": [lng, lat]},
-               'properties' : {
-                 'marker-color': '#000',
-                 'marker-symbol': happyHappening.marker,
-                 title: happyHappening.title,
-                 description: happyHappening.description,
-                 date: happyHappening.date,
-                 image: happyHappening.image
-               }
-             };
-    })
+      return {
+        'geometry' : { "coordinates": [lng, lat]},
+        'properties' : {
+          'marker-color': '#000',
+          'marker-symbol': happyHappening.marker,
+          title: happyHappening.title,
+          description: happyHappening.description,
+          date: happyHappening.date,
+          image: happyHappening.image
+        }
+      };
+    });
+
     console.log('Happenings!');
     console.log(happenings);
 
     // Add the markers into the map!
     theMarkerLayer.features(happenings);
     var markers = theMarkerLayer.markers().sort(function(a, b) {
-      return a.data.properties.date.unix() - b.data.properties.date.unix()
-    })
+      return a.data.properties.date.unix() - b.data.properties.date.unix();
+    });
 
     // Ease to and show the initial marker
     theMap.ease.location(markers[0].location).zoom(13).optimal();
@@ -100,10 +103,10 @@ function showInfo(data, tabletop) {
     // Set an interval to ease between markers
     var currentMarkerIndex = 1; // we'll start looping on the second marker and display the first
     var totalMarkers = happenings.length;
-    var playIt = function() { 
+    var playIt = function() {
       var timerId = setInterval(function() {
         // Find the current marker
-        var currentMarker = markers[currentMarkerIndex]
+        var currentMarker = markers[currentMarkerIndex];
 
         // Ease to the marker
         theMap.ease.location(currentMarker.location).zoom(15).optimal();
@@ -113,7 +116,7 @@ function showInfo(data, tabletop) {
 
         // Increment the marker or start over again
         if  (currentMarkerIndex == totalMarkers - 1) {
-          currentMarkerIndex = 0; 
+          currentMarkerIndex = 0;
         }
         else {
           currentMarkerIndex++;
@@ -125,7 +128,7 @@ function showInfo(data, tabletop) {
 
     // Start it off
     var id = playIt();
-    var playing = true
+    var playing = true;
 
     // Set the start and stop handler
     $('#play').click(function() {
@@ -143,5 +146,3 @@ function showInfo(data, tabletop) {
     });
   });
 }
-
-

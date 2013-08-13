@@ -22,7 +22,7 @@ function showInfo(data, tabletop) {
   console.log(data);
 
   // Create a map... with yet another callback
-  mapbox.auto('map', 'jugglingnutcase.map-rxoo73qt', function(map) {
+  mapbox.auto('map', 'examples.map-20v6611k', function(map) {
     theMap = map;
 
     // Create an empty markers layer

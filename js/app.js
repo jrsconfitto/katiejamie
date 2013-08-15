@@ -1,25 +1,22 @@
-$(function(){
-  init();
-});
-
-var katieAndJamieSpreadsheet = 'https://docs.google.com/spreadsheet/pub?key=0AmhWglGO45rldGNoYy12ZDk2bU1EWTRZTWFtVEpJd2c&output=html';
 var happenings;
 var theMap;
 var theMarkerLayer;
 var playIt;
 
-// Read the spreadsheet first, then execute the callback
-function init() {
-  Tabletop.init({
-   key: katieAndJamieSpreadsheet,
-   callback: showInfo,
-   simpleSheet: true });
-}
+document.addEventListener('DOMContentLoaded', function () {
+    var gData
+    var URL = "0AmhWglGO45rldGNoYy12ZDk2bU1EWTRZTWFtVEpJd2c"
+    Tabletop.init({
+        key: URL,
+        callback: showInfo,
+        simpleSheet: true
+    })
+});
 
 // Spreadsheet callback
 function showInfo(data, tabletop) {
-  console.log('Successfully processed!');
-  console.log(data);
+  gData = data
+  console.log('Successfully processed! The data can be found in `gData`!');
 
   // Create a map... with yet another callback
   mapbox.auto('map', 'examples.map-20v6611k', function(map) {
